@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>💎 Datta & Ajay's Luxury Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="loginOverlay" class="modal-overlay" style="background: var(--dark); z-index: 5000;">
+    <div class="modal-content" style="text-align: center; border-radius: 30px;">
+        <div class="logo" style="font-size: 2rem; margin-bottom: 10px;">DATTA & AJAY</div>
+        <p style="color: #64748b; margin-bottom: 25px;">Enter the world of luxury shopping</p>
+        <input type="text" id="userNameInput" placeholder="Your Full Name">
+        <button class="add-btn" style="background: var(--primary); color: white; padding: 16px; font-size: 1rem;" onclick="saveUser()">Start Shopping <i class="fa fa-arrow-right"></i></button>
+    </div>
+</div>
+
+<div id="mainApp" class="hidden">
+    <header>
+        <div class="logo">DATTA & AJAY'S STORE</div>
+        <div id="welcomeMsg" style="font-size: 0.8rem; font-weight: 500; color: #64748b; margin-top: 5px;"></div>
+        <div class="nav-buttons">
+            <button class="btn" onclick="location.reload()"><i class="fa fa-th-large"></i> Home</button>
+            <button class="btn btn-cart" onclick="toggleSidebar('cartSidebar')">
+                <i class="fa fa-shopping-bag"></i> <span id="cartCount">0</span> Items
+            </button>
+            <button class="btn" style="color: var(--accent);" onclick="logout()"><i class="fa fa-power-off"></i></button>
+        </div>
+    </header>
+
+    <div class="cat-scroll" id="catBar"></div>
+    <div style="padding: 20px 20px 0; font-weight: 700; font-size: 1.2rem;" id="catTitle">Featured Collection</div>
+    <main id="products"></main>
+</div>
+
+<div id="cartSidebar" class="sidebar">
+    <div class="sb-head"><b>Your Bag 👜</b><i class="fa fa-times" style="cursor:pointer" onclick="toggleSidebar('cartSidebar')"></i></div>
+    <div id="cartItems" style="flex:1; overflow-y:auto; padding:15px;"></div>
+    <div style="padding:25px; background: #f8fafc; border-top: 1px solid #e2e8f0;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+            <span style="color: #64748b;">Subtotal</span>
+            <b style="font-size: 1.3rem;">₹<span id="totalPrice">0</span></b>
+        </div>
+        <button class="add-btn" style="background:var(--dark); color:white; padding:16px; font-size:1rem;" onclick="openCheckout()">Checkout Now</button>
+    </div>
+</div>
+
+<div id="checkoutModal" class="modal-overlay hidden">
+    <div class="modal-content">
+        <div id="checkoutForm">
+            <h2 style="margin-top:0; letter-spacing:-1px;">Secure Checkout 🔐</h2>
+            <label style="font-size: 0.8rem; font-weight:600; color:#64748b;">SHIPPING NAME</label>
+            <input type="text" id="cName" placeholder="Full Name">
+            
+            <label style="font-size: 0.8rem; font-weight:600; color:#64748b;">MOBILE VERIFICATION</label>
+            <div class="phone-group" style="display: flex; gap: 5px;">
+                <select id="countryCode" style="width: 30%;">
+                    <option value="+91">🇮🇳 +91</option>
+                    <option value="+1">🇺🇸 +1</option>
+                </select>
+                <input type="number" id="cPhone" placeholder="Phone Number">
+            </div>
+
+            <label style="font-size: 0.8rem; font-weight:600; color:#64748b;">DELIVERY ADDRESS *</label>
+            <textarea id="cAddr" placeholder="Street, Building, City, Pincode" rows="3" required></textarea>
+            
+            <h4 style="margin:20px 0 10px;">Payment Method</h4>
+            <div class="pay-option btn" id="opt-upi" style="margin-bottom: 10px; width: 100%;" onclick="setPay('upi')"><i class="fa fa-qrcode"></i> UPI Transfer</div>
+            <div id="upiBox" class="hidden"><input type="text" id="upiIdInput" placeholder="Enter your UPI ID"></div>
+            <div class="pay-option btn" id="opt-cod" style="width: 100%;" onclick="setPay('cod')"><i class="fa fa-truck"></i> Cash on Delivery</div>
+
+            <button class="add-btn" style="background:var(--primary); color:white; padding:18px; margin-top:20px; font-size:1.1rem;" onclick="processOrder()">Place Order</button>
+            <p style="text-align:center; color:#94a3b8; font-size:0.85rem; margin-top:15px; cursor:pointer;" onclick="closeCheckout()">Cancel Order</p>
+        </div>
+
+        <div id="finalBill" class="hidden" style="text-align:center;">
+            <div class="success-check"><i class="fa fa-check-circle"></i></div>
+            <h2 style="margin-top:0;">Order Confirmed!</h2>
+            <p style="color:#64748b; margin-bottom:25px;">Order ID: #<span id="bId"></span></p>
+            
+            <div class="invoice-box">
+                <div class="invoice-top">Official Invoice</div>
+                <div id="bItems"></div>
+                <div class="bill-item" style="background:#f8fafc; font-weight:700; font-size:1.1rem;">
+                    <span>Grand Total</span>
+                    <span>₹<span id="bTotal"></span></span>
+                </div>
+            </div>
+            <button class="add-btn" style="margin-top:25px; background:var(--dark); color:white;" onclick="location.reload()">Back to Home</button>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
